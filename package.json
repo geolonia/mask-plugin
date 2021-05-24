@@ -1,0 +1,34 @@
+{
+  "name": "@geolonia/plugin-boilerplate",
+  "version": "0.0.0",
+  "main": "dist/hello-geolonia-plugin.min.js",
+  "description": "Geolonia Embed API plugin to fix your map.",
+  "keywords": [
+    "map",
+    "location",
+    "plugin"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf ./dist ./docs && webpack && mkdir -p ./dist && cp ./docs/*.js ./dist/ && cp ./docs/*.js.map ./dist/",
+    "start": "NODE_ENV=development webpack serve"
+  },
+  "devDependencies": {
+    "@geolonia/embed": "^1.14.14",
+    "@types/copy-webpack-plugin": "^8.0.0",
+    "@types/mapbox-gl": "^2.1.2",
+    "@types/webpack": "^5.28.0",
+    "@types/webpack-dev-server": "^3.11.4",
+    "html-webpack-plugin": "^5.3.1",
+    "prettier": "^2.3.0",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^9.2.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.2.4",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {},
+  "repository": "git@github.com:geolonia/plugin-boilerplate.git"
+}
