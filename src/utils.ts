@@ -24,12 +24,29 @@ const isGeoJSON = (obj: any): obj is GeoJSON.FeatureCollection => {
     }
 }
 
+export const isPolygonFeature = (feature: any): feature is GeoJSON.Feature<GeoJSON.Polygon> => {
+    return !!feature &&
+        !!feature.geometry &&
+        !!feature.geometry.type &&
+        feature.geometry.type.toLowerCase() === 'polygon'
+}
+
+/**
+ * Parse Geolonia Embed attribute like data-geojson 
+ * @param att attribute
+ * @returns GeoJSON object if exists
+ */
 export const parseGeoJSONAtt = async (att: string | void) => {
     if (att) {
         let json
         const el = isCssSelector(att)
         if (el && el.textContent) {
-            json = JSON.parse(el.textContent)
+            try {
+                json = JSON.parse(el.textContent)
+            } catch (error) {
+                console.error(error)
+                return null
+            }
         } else {
             const res = await fetch(att)
             json = await res.json()
@@ -44,12 +61,13 @@ export const parseGeoJSONAtt = async (att: string | void) => {
     }
 }
 
-export const getBbox = (coordinates: any) => {
-    const [firstX, firstY] = coordinates[0];
-    const initialBbox = [firstX, firstY, firstX, firstY]
+type BBox2D = [east: number, south: number, west: number, north: number]
 
-    return coordinates.reduce(
-        // @ts-ignore
+export const getBbox = (coordinates: [firstX: number, firstY: number][]) => {
+    const [firstX, firstY] = coordinates[0];
+    const initialBbox: BBox2D = [firstX, firstY, firstX, firstY]
+
+    return coordinates.reduce<BBox2D>(
         (prev, [x, y]) => {
             return ([
                 Math.min(prev[0], x),

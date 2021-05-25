@@ -2,59 +2,41 @@ import * as Geolonia from '@geolonia/embed'
 import mapboxgl from 'mapbox-gl'
 import bboxPolygon from '@turf/bbox-polygon'
 import difference from '@turf/difference'
-import { parseGeoJSONAtt, getBbox } from './utils'
+import { parseGeoJSONAtt, isPolygonFeature, getBbox } from './utils'
+import { maskStyle } from './style'
 
-const HelloGeoloniaPlugin: Geolonia.EmbedPlugin = (map, target, atts) => {
+const maskPlugin: Geolonia.EmbedPlugin = (map, target, atts) => {
 
   map.on('load', async (e: mapboxgl.MapSourceDataEvent) => {
     const maskGeojsonObject = await parseGeoJSONAtt(atts.maskGeojson)
-
     if (!maskGeojsonObject) {
       return
     }
-    const maskFeature = maskGeojsonObject.features[0]
-    if (
-      !maskFeature ||
-      !maskFeature.geometry ||
-      maskFeature.geometry.type.toLowerCase() !== 'polygon'
-    ) {
+
+    const inner = maskGeojsonObject.features[0]
+    if (!isPolygonFeature(inner)) {
       return
     }
-    // @ts-ignore
-    const geojsonBounds = getBbox(maskGeojsonObject.features[0].geometry.coordinates[0])
-    map.fitBounds(geojsonBounds, {
-      duration: 0,
-      padding: 30,
-    })
 
-    const extBounds = map.getBounds()
-    map.setMaxBounds(extBounds)
-    const bbox = extBounds.toArray()
-    const donut = difference(
-      bboxPolygon([bbox[0][0], bbox[0][1], bbox[1][0], bbox[1][1]]),
-      // @ts-ignore
-      maskFeature)
+    // @ts-ignore
+    const coords = maskGeojsonObject.features[0].geometry.coordinates[0]
+    const geojsonBounds = getBbox(coords)
+
+    // TODO: 非同期処理を確認
+    map.fitBounds(geojsonBounds, { duration: 0, padding: 30 })
+    const fittedBounds = map.getBounds()
+    map.setMaxBounds(fittedBounds)
+
+    const [[left, bottom], [right, top]] = fittedBounds.toArray()
+    const outer = bboxPolygon([left, bottom, right, top])
+    const donut = difference(outer, inner)
     if (!donut) {
       return
     }
 
-    map.addSource('geolonia-mask-plugin', {
-      type: "geojson",
-      data: donut
-    });
-
-    map.addLayer({
-      id: "geolonia-mask-plugin-fill",
-      source: "geolonia-mask-plugin",
-      type: "fill",
-      filter: ['==', '$type', 'Polygon'],
-      paint: {
-        "fill-color": "white",
-        'fill-opacity': 0.9,
-        'fill-outline-color': '#aaa'
-      }
-    });
+    map.addSource('geolonia-mask-plugin', { type: "geojson", data: donut });
+    map.addLayer(maskStyle({ id: "geolonia-mask-plugin-fill", source: "geolonia-mask-plugin" }));
   })
 }
 
-window.geolonia.registerPlugin(HelloGeoloniaPlugin)
+window.geolonia.registerPlugin(maskPlugin)

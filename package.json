@@ -34,8 +34,7 @@
   },
   "dependencies": {
     "@turf/bbox-polygon": "^6.3.0",
-    "@turf/difference": "^6.3.0",
-    "turf-polygon": "^1.0.3"
+    "@turf/difference": "^6.3.0"
   },
   "repository": "git@github.com:geolonia/mask-plugin.git"
 }
