@@ -1,5 +1,5 @@
 {
-  "name": "@geolonia/plugin-boilerplate",
+  "name": "@geolonia/mask-plugin",
   "version": "0.0.0",
   "main": "dist/hello-geolonia-plugin.min.js",
   "description": "Geolonia Embed API plugin to fix your map.",
@@ -37,5 +37,5 @@
     "@turf/difference": "^6.3.0",
     "turf-polygon": "^1.0.3"
   },
-  "repository": "git@github.com:geolonia/plugin-boilerplate.git"
+  "repository": "git@github.com:geolonia/mask-plugin.git"
 }
