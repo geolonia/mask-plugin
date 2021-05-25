@@ -5,7 +5,7 @@
 ## 使い方
 
 ```html
-<div class="geolonia"></div>
+<div class="geolonia" data-mask-geojson="https://example.com/path/to.geojson"></div>
 <script src="https://cdn.geolonia.com/v1/embed?geolonia-api-key=YOUR-API-KEY"></script>
 <script src="https://geolonia.github.io/mask-plugin/mask-plugin.min.js>
 ```

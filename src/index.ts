@@ -28,15 +28,12 @@ const HelloGeoloniaPlugin: Geolonia.EmbedPlugin = (map, target, atts) => {
     })
 
     const extBounds = map.getBounds()
-    console.log({ extBounds })
     map.setMaxBounds(extBounds)
-    console.log()
     const bbox = extBounds.toArray()
     const donut = difference(
       bboxPolygon([bbox[0][0], bbox[0][1], bbox[1][0], bbox[1][1]]),
       // @ts-ignore
       maskFeature)
-    console.log(donut)
     if (!donut) {
       return
     }
