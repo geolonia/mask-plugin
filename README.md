@@ -7,7 +7,7 @@
 ```html
 <div class="geolonia"></div>
 <script src="https://cdn.geolonia.com/v1/embed?geolonia-api-key=YOUR-API-KEY"></script>
-<script src="https://geolonia.github.io/mask-plugin/hello-geolonia-plugin.min.js>
+<script src="https://geolonia.github.io/mask-plugin/mask-plugin.min.js>
 ```
 
 ## コントリビューション

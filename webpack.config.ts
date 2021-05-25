@@ -29,7 +29,7 @@ const config: webpack.Configuration = {
   devtool: 'source-map',
   output: {
     path: dest,
-    filename: "hello-geolonia-plugin.min.js",
+    filename: "mask-plugin.min.js",
   },
 };
 
