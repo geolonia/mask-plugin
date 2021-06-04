@@ -18,6 +18,8 @@ const maskPlugin: Geolonia.EmbedPlugin = (map, target, atts) => {
       return
     }
 
+    const fillMask = atts.fillMask.toUpperCase() === 'on'
+
     // @ts-ignore
     const coords = maskGeojsonObject.features[0].geometry.coordinates[0]
     const geojsonBounds = getBbox(coords)
@@ -35,7 +37,7 @@ const maskPlugin: Geolonia.EmbedPlugin = (map, target, atts) => {
     }
 
     map.addSource('geolonia-mask-plugin', { type: "geojson", data: donut });
-    map.addLayer(maskStyle({ id: "geolonia-mask-plugin-fill", source: "geolonia-mask-plugin" }));
+    map.addLayer(maskStyle({ id: "geolonia-mask-plugin-fill", source: "geolonia-mask-plugin", fillMask }));
   })
 }
 

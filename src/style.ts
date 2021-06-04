@@ -1,6 +1,6 @@
 import mapboxgl from "mapbox-gl"
 
-export const maskStyle = ({ id, source }: { id: string, source: string }): mapboxgl.FillLayer => {
+export const maskStyle = ({ id, source, fillMask }: { id: string, source: string, fillMask: boolean }): mapboxgl.FillLayer => {
     return {
         id,
         source,
@@ -8,7 +8,7 @@ export const maskStyle = ({ id, source }: { id: string, source: string }): mapbo
         filter: ['==', '$type', 'Polygon'],
         paint: {
             "fill-color": "white",
-            'fill-opacity': 0.9,
+            'fill-opacity': fillMask ? 0.9 : 0,
             'fill-outline-color': '#aaa'
         }
     }
