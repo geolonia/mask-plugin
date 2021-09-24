@@ -17,8 +17,9 @@ const maskPlugin: Geolonia.EmbedPlugin = (map, target, atts) => {
     if (!isPolygonFeature(inner)) {
       return
     }
+    console.log(atts)
 
-    const fillMask = atts.fillMask.toUpperCase() === 'on'
+    const fillMask = atts.fillMask !== 'off'
 
     // @ts-ignore
     const coords = maskGeojsonObject.features[0].geometry.coordinates[0]
